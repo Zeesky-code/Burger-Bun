@@ -8,7 +8,7 @@ require('dotenv').config()
 
 const app = express();
 
-const PORT = 9090 || process.env.PORT
+const PORT = 8080 || process.env.PORT
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.json());
