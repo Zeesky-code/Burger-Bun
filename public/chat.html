@@ -67,7 +67,7 @@ Author URL: http://w3layouts.com
     <!--/header-->
     <!-- banner section -->
     <section id="home" class="w3l-banner py-5">
-        <div id="row align-items-center py-lg-5 py-4 mt-4 chat">
+        <div id="row align-items-center py-lg-5 py-4 mt-4 chat" >
             <main class="chat-main">
                 <div class="chat-messages">
                     <div class="message">
@@ -86,15 +86,16 @@ Author URL: http://w3layouts.com
                     </div>
                 </div>
             </main>
-            <div class="chat-form-container">
-                <form id="chat-form">
-                    <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
-                    <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
-                </form>
-            </div>
+            
         </div>
         </div>
     </section>
+    <div class="chat-form-container">
+        <form id="chat-form">
+            <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
+            <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+        </form>
+    </div>
     <!-- //banner section -->
 
     <script>
@@ -125,29 +126,7 @@ Author URL: http://w3layouts.com
 
     <script src="assets/js/owl.carousel.js"></script><!-- owl carousel -->
 
-    <!-- script for tesimonials carousel slider -->
-    <script>
-        $(document).ready(function () {
-            $("#owl-demo1").owlCarousel({
-                loop: true,
-                margin: 20,
-                nav: false,
-                responsiveClass: true,
-                responsive: {
-                    0: {
-                        items: 1,
-                        nav: false
-                    },
-                    1000: {
-                        items: 1,
-                        nav: false,
-                        loop: false
-                    }
-                }
-            })
-        })
-    </script>
-    <!-- //script for tesimonials carousel slider -->
+
 
     <script src="assets/js/jquery.magnific-popup.min.js"></script>
     <script>
@@ -188,17 +167,7 @@ Author URL: http://w3layouts.com
 
     <script src="assets/js/counter.js"></script>
 
-    <!-- gallery popup js -->
-    <script src="assets/js/smartphoto.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const sm = new SmartPhoto(".js-img-viwer", {
-                showAnimation: false
-            });
-            // sm.destroy();
-        });
-    </script>
-    <!-- //gallery popup js -->
+
 
     <!--/MENU-JS-->
     <script>
@@ -243,6 +212,36 @@ Author URL: http://w3layouts.com
     <script src="assets/js/bootstrap.min.js"></script>
     <!-- //bootstrap-->
 
+    <!--chat-->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        let socket = null
+        const messages = document.getElementsByClassName('chat-messages')[0];
+        var meta = document.createElement('p');
+        meta.className = 'meta'
+        meta.innerHTML = 'Burger Bun'
+
+        window.addEventListener('load', () =>{
+            socket = io();
+            let user;
+
+            socket.on('message', function(data){
+                var messageDiv = document.createElement('div');
+                messageDiv.className = "message"
+                var message = document.createElement('p');
+                message.className = 'text';
+                message.innerHTML = data;
+
+                messageDiv.appendChild(meta)
+                messageDiv.appendChild(message)
+                messages.appendChild(messageDiv)
+                console.log(data)
+            })
+        })
+        
+    </script>
+    
+    <!-- //chat-->
 </body>
 
 </html>
