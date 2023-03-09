@@ -12592,10 +12592,10 @@ h3.title-small span {
 	justify-content: space-between;
 }
 
-.chat-main {
+/* .chat-main {
 	display: grid;
 	grid-template-columns: 1fr 3fr;
-}
+} */
 
 
 .chat-messages {
@@ -12609,6 +12609,7 @@ h3.title-small span {
 	margin-bottom: 15px;
 	background-color: var(--dark-color-a);
 	border-radius: 5px;
+  width: max-content;
 }
 
 .chat-messages .message .meta {
@@ -12635,7 +12636,7 @@ h3.title-small span {
   margin-left: auto;
   left: 0px;
   right: 0px;
-	padding: 20px 30px;
+	padding: 10px 15px;
 	background-color: var(--dark-color-a);
 }
 
@@ -12648,4 +12649,15 @@ h3.title-small span {
 	padding: 5px;
 	height: 40px;
 	flex: 1;
+}
+.chatpage{
+  z-index: 0;
+  position: relative;
+  min-height: calc(100vh - 20px);
+  align-items: center;
+  display: grid;
+}
+.chatpage div{
+  width: 100%;
+  height: 100%;
 }

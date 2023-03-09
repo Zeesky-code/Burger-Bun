@@ -65,31 +65,30 @@ Author URL: http://w3layouts.com
         </div>
     </header>
     <!--/header-->
-    <!-- banner section -->
-    <section id="home" class="w3l-banner py-5">
-        <div id="row align-items-center py-lg-5 py-4 mt-4 chat" >
-            <main class="chat-main">
-                <div class="chat-messages">
-                    <div class="message">
-                        <p class="meta">Brad <span>9:12pm</span></p>
-                        <p class="text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
-                            repudiandae.
-                        </p>
+    <section class="w3l-mobile-content-6 py-5 chatpage">
+        <div class="mobile-info py-lg-5 py-md-4 py-2">
+            <!-- /mobile-info-->
+            <div class="container">
+                <div class="row mobile-info-inn mx-lg-0">
+                    <div id="row align-items-center py-lg-5 py-4 mt-4 chat" >
+                        <main class="chat-main">
+                            <div class="chat-messages">
+                                <!-- <div class="message">
+                                    <p class="meta">Burger Bun</p>
+                                    <p class="text">Hello there, Please enter your name</p>
+                                </div> -->
+                            </div>
+                        </main>
+                        
                     </div>
-                    <div class="message">
-                        <p class="meta">Mary <span>9:15pm</span></p>
-                        <p class="text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
-                            repudiandae.
-                        </p>
-                    </div>
+    
                 </div>
-            </main>
-            
-        </div>
+            </div>
+            <!-- //mobile-info-->
         </div>
     </section>
+    <!-- banner section -->
+
     <div class="chat-form-container">
         <form id="chat-form">
             <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
@@ -217,6 +216,7 @@ Author URL: http://w3layouts.com
     <script>
         let socket = null
         const messages = document.getElementsByClassName('chat-messages')[0];
+        const form = document.getElementById('chat-form')
         var meta = document.createElement('p');
         meta.className = 'meta'
         meta.innerHTML = 'Burger Bun'
@@ -224,18 +224,33 @@ Author URL: http://w3layouts.com
         window.addEventListener('load', () =>{
             socket = io();
             let user;
-
-            socket.on('message', function(data){
+            socket.on('message', function(message){
                 var messageDiv = document.createElement('div');
                 messageDiv.className = "message"
+                messageDiv.appendChild(meta)
                 var message = document.createElement('p');
                 message.className = 'text';
-                message.innerHTML = data;
-
-                messageDiv.appendChild(meta)
+                message.innerHTML = message ;
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
-                console.log(data)
+            })
+            socket.on('options', function(options){
+                var messageDiv = document.createElement('div');
+                messageDiv.className = "message"
+                messageDiv.appendChild(meta)
+                var message = document.createElement('p');
+                message.className = 'text';
+                message.innerHTML = options ;
+                messageDiv.appendChild(message)
+                messages.appendChild(messageDiv)
+
+                
+            })
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const msg = document.getElementById('msg')
+                console.log(msg.value)
+                socket.emit('order',msg.value)
             })
         })
         
