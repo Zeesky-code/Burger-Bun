@@ -25,6 +25,10 @@ class ChatSession{
         const optionsEvent = this.createEvent({eventName:'options',message:options})
         this.emitMessage(optionsEvent)
     }
+    displayError(socket){
+        const errorEvent = this.createEvent({eventName: 'error', message: 'Invalid Selection, please try again'})
+        this.emitMessage(errorEvent)
+    }
 }
 
 module.exports = ChatSession

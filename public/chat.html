@@ -70,7 +70,7 @@ Author URL: http://w3layouts.com
             <!-- /mobile-info-->
             <div class="container">
                 <div class="row mobile-info-inn mx-lg-0">
-                    <div id="row align-items-center py-lg-5 py-4 mt-4 chat" >
+                    <div id="row align-items-center py-lg-5 py-4 mt-4 chat">
                         <main class="chat-main">
                             <div class="chat-messages">
                                 <!-- <div class="message">
@@ -79,9 +79,9 @@ Author URL: http://w3layouts.com
                                 </div> -->
                             </div>
                         </main>
-                        
+
                     </div>
-    
+
                 </div>
             </div>
             <!-- //mobile-info-->
@@ -214,6 +214,7 @@ Author URL: http://w3layouts.com
     <!--chat-->
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
+
         let socket = null
         const messages = document.getElementsByClassName('chat-messages')[0];
         const form = document.getElementById('chat-form')
@@ -221,41 +222,50 @@ Author URL: http://w3layouts.com
         meta.className = 'meta'
         meta.innerHTML = 'Burger Bun'
 
-        window.addEventListener('load', () =>{
+        window.addEventListener('load', () => {
             socket = io();
             let user;
-            socket.on('message', function(message){
+            // socket.on('message', function(message){
+            //     var messageDiv = document.createElement('div');
+            //     messageDiv.className = "message"
+            //     messageDiv.appendChild(meta)
+            //     var message = document.createElement('p');
+            //     message.className = 'text';
+            //     message.innerHTML = message ;
+            //     messageDiv.appendChild(message)
+            //     messages.appendChild(messageDiv)
+            // })
+            socket.on('options', function (options) {
                 var messageDiv = document.createElement('div');
                 messageDiv.className = "message"
                 messageDiv.appendChild(meta)
                 var message = document.createElement('p');
                 message.className = 'text';
-                message.innerHTML = message ;
-                messageDiv.appendChild(message)
-                messages.appendChild(messageDiv)
-            })
-            socket.on('options', function(options){
-                var messageDiv = document.createElement('div');
-                messageDiv.className = "message"
-                messageDiv.appendChild(meta)
-                var message = document.createElement('p');
-                message.className = 'text';
-                message.innerHTML = options ;
+                message.innerHTML = options;
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
 
-                
+
             })
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 const msg = document.getElementById('msg')
+
+                var messageDiv = document.createElement('div');
+                messageDiv.className = "message"
+                var message = document.createElement('p');
+                message.className = 'text';
+                message.textContent = msg.value;
+                messageDiv.appendChild(message)
+                messages.appendChild(messageDiv)
+
                 console.log(msg.value)
-                socket.emit('order',msg.value)
+                socket.emit('order', msg.value)
             })
         })
-        
+
+
     </script>
-    
     <!-- //chat-->
 </body>
 
