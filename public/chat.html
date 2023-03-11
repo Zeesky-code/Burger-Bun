@@ -84,22 +84,11 @@ Author URL: http://w3layouts.com
     </section>
     
 
-    <!-- <div class="chat-form-container">
-        <form id="chat-form">
-            <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
-            <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
-        </form>
-    </div> -->
-    <!-- //banner section -->
-
-
-
     <script src="assets/js/jquery-3.3.1.min.js"></script> <!-- Common jquery plugin -->
 
     <script src="assets/js/theme-change.js"></script><!-- theme switch js (light and dark)-->
 
     <script src="assets/js/owl.carousel.js"></script><!-- owl carousel -->
-
 
 
     <script src="assets/js/jquery.magnific-popup.min.js"></script>
@@ -198,23 +187,12 @@ Author URL: http://w3layouts.com
 
         window.addEventListener('load', () => {
             socket = io();
-            let user;
-            // socket.on('message', function(message){
-            //     var messageDiv = document.createElement('div');
-            //     messageDiv.className = "message"
-            //     messageDiv.appendChild(meta)
-            //     var message = document.createElement('p');
-            //     message.className = 'text';
-            //     message.innerHTML = message ;
-            //     messageDiv.appendChild(message)
-            //     messages.appendChild(messageDiv)
-            // })
-            socket.on('options', function (options) {
+            socket.on('botMessage', function (botMessage) {
                 var messageDiv = document.createElement('li');
                 messageDiv.className = "sent"
                 messageDiv.appendChild(img)
                 var message = document.createElement('p');
-                message.innerHTML = options;
+                message.innerHTML = botMessage;
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
 
@@ -230,9 +208,7 @@ Author URL: http://w3layouts.com
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
 
-
-                console.log(msg.value)
-                //socket.emit('order', msg.value)
+                socket.emit('userMessage', msg.value)
             })
         })
 

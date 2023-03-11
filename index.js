@@ -41,29 +41,30 @@ app.use(sessionMiddleware)
 
 io.on("connection", (socket) => {
     // Listen for order requests
-    socket.on('order', (order) => {
-        console.log('Received order:', order);
-
-        // Add order to localStorage
-        const deviceId = socket.handshake.headers['sec-websocket-key'];
-        if (!orders[deviceId]) {
-            orders[deviceId] = [];
-        }
-        orders[deviceId].push(order);
-        //localStorage.setItem('orders', JSON.stringify(orders));
-
-        // Send confirmation message
-        socket.emit('message', 'Order placed');
-        console.log(deviceId)
-        console.log(order)
-    });
-    
     const sessionData = socket.request.session;
     const chatSession = new ChatSession({io, sessionData})
     console.log("User connected")
     chatSession.displayOptions()
-    // socket.emit("options", options);
-    // console.log(sessionData)
+    socket.on('userMessage', (message) => {
+        chatSession.checkUserMessage({message})
+        console.log('Received order:', message);
+
+        // // Add order to localStorage
+        // const deviceId = socket.handshake.headers['sec-websocket-key'];
+        // if (!orders[deviceId]) {
+        //     orders[deviceId] = [];
+        // }
+        // orders[deviceId].push(order);
+        // //localStorage.setItem('orders', JSON.stringify(orders));
+
+        // Send confirmation message
+        socket.emit('message', 'Order placed');
+
+    });
+    
+    
+
+
 })
 
 

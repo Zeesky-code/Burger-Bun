@@ -1,3 +1,4 @@
-export function inputValidator (input){
-    return typeof input == 'number'
+function inputValidator (input){
+    return !isNaN(input)
 }
+module.exports = inputValidator
