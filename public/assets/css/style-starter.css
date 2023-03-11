@@ -12671,16 +12671,15 @@ h3.title-small span {
   height: 92vh;
   min-height: 300px;
   max-height: 720px;
-  background: #E6EAEA;
+  background: transparent;
   box-shadow: 0px 0px 3px #bbbbbb;
   border-radius: 5px;
   overflow: hidden;
-
+  margin: 15px auto;
   letter-spacing: 0.1px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+  -webkit-font-smoothing: antialiased;
 
-text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
--webkit-font-smoothing: antialiased;
-margin:0 auto;
 }
 @media screen and (max-width: 360px) {
 #framechat {
@@ -12764,7 +12763,7 @@ margin-bottom: 20px;
 margin: 6px 8px 0 0;
 }
 #framechat .content .messages ul li.sent p {
-background: #435f7a;
+background: #fbaf32;
 color: #f5f5f5;
 }
 #framechat .content .messages ul li.replies img {
@@ -12772,7 +12771,7 @@ float: right;
 margin: 6px 0 0 8px;
 }
 #framechat .content .messages ul li.replies p {
-background: #f5f5f5;
+background: #fbaf32;
 float: right;
 }
 #framechat .content .messages ul li img {
@@ -12817,7 +12816,7 @@ width: 45px;
 height:45px;
 line-height:42px;
 cursor: pointer;
-background: #32465a;
+background: #fbaf32;
 color: #f5f5f5;
 }
 

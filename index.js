@@ -21,23 +21,22 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const session = require('express-session')
 require('dotenv').config()
+
 const sessionMiddleware = session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        //set expiry time for session to 7 days
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
 });
 
 io.engine.use(sessionMiddleware);
-const orders = {};
+app.use(sessionMiddleware)
 
 // Define options to be sent to customer on landing page
-const options = [
-    'Select 1 to place an order',
-    'Select 99 to checkout order',
-    'Select 98 to see order history',
-    'Select 97 to see current order',
-    'Select 0 to cancel order',
-];
 
 
 io.on("connection", (socket) => {
@@ -58,8 +57,10 @@ io.on("connection", (socket) => {
         console.log(deviceId)
         console.log(order)
     });
+    
     const sessionData = socket.request.session;
     const chatSession = new ChatSession({io, sessionData})
+    console.log("User connected")
     chatSession.displayOptions()
     // socket.emit("options", options);
     // console.log(sessionData)

@@ -69,75 +69,20 @@ Author URL: http://w3layouts.com
     <section class="w3l-mobile-content-6 py-5 w3l-banner">
         <div id="framechat">
             <div class="content">
-                <div class="header">
-                    <i class="fa fa-comments"></i>
-                    <p>CHATBOX</p>
-                </div>
                 <div class="messages">
-                    <ul>
-                        <li class="sent">
-                            <img src="assets/images/burger.png" alt="" />
-                            <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-                        </li>
-                        <li class="replies">
-                            <p>When you're backed against the wall, break the god damn thing down.</p>
-                        </li>
-                        <li class="replies">
-                            <p>Excuses don't win championships.</p>
-                        </li>
-                        <li class="sent">
-                            <img src="assets/images/burger.png" alt="" />
-                            <p>Oh yeah, did Michael Jordan tell you that?</p>
-                        </li>
-                        <li class="replies">
-                            <p>No, I told him that.</p>
-                        </li>
-                        <li class="replies">
-                            <p>What are your choices when someone puts a gun to your head?</p>
-                        </li>
-                        <li class="sent">
-                            <img src="assets/images/burger.png" alt="" />
-                            <p>What are you talking about? You do what they say or they shoot you.</p>
-                        </li>
-                        <li class="replies">
-                            <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-                        </li>
+                    <ul class="message-list">
                     </ul>
                 </div>
-                <div class="message-input">
+                <form class="message-input">
                     <div class="wrap">
-                    <input type="text" placeholder="Write your message..." />
-                    <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        <input type="text" id ="msg" placeholder="Write your message..." />
+                        <button class="submit btn"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </section>
     
-
-    <!-- <section class="w3l-mobile-content-6 py-5 chatpage">
-        <div class="mobile-info py-lg-5 py-md-4 py-2">
-            <!-- /mobile-info-->
-            <!-- <div class="container">
-                <div class="row mobile-info-inn mx-lg-0">
-                    <div id="row align-items-center py-lg-5 py-4 mt-4 chat">
-                        <main class="chat-main">
-                            <div class="chat-messages">
-                                <!-- <div class="message">
-                                    <p class="meta">Burger Bun</p>
-                                    <p class="text">Hello there, Please enter your name</p>
-                                </div> -->
-                            <!-- </div>
-                        </main>
-
-                    </div>
-
-                </div>
-            </div>
-            <!-- //mobile-info-->
-        <!-- </div>
-    </section> --> --> --> -->
-    <!-- banner section -->
 
     <!-- <div class="chat-form-container">
         <form id="chat-form">
@@ -147,27 +92,7 @@ Author URL: http://w3layouts.com
     </div> -->
     <!-- //banner section -->
 
-    <script>
-        // When the user scrolls down 20px from the top of the document, show the button
-        window.onscroll = function () {
-            scrollFunction()
-        };
 
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                document.getElementById("movetop").style.display = "block";
-            } else {
-                document.getElementById("movetop").style.display = "none";
-            }
-        }
-
-        // When the user clicks on the button, scroll to the top of the document
-        function topFunction() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
-    </script>
-    <!-- /move top -->
 
     <script src="assets/js/jquery-3.3.1.min.js"></script> <!-- Common jquery plugin -->
 
@@ -265,13 +190,11 @@ Author URL: http://w3layouts.com
     
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script>
-
         let socket = null
-        const messages = document.getElementsByClassName('chat-messages')[0];
-        const form = document.getElementById('chat-form')
-        var meta = document.createElement('p');
-        meta.className = 'meta'
-        meta.innerHTML = 'Burger Bun'
+        const messages = document.getElementsByClassName('message-list')[0];
+        const form = document.getElementsByClassName('message-input')[0]
+        const img = document.createElement('img')
+        img.src= "assets/images/burger.png"
 
         window.addEventListener('load', () => {
             socket = io();
@@ -287,11 +210,10 @@ Author URL: http://w3layouts.com
             //     messages.appendChild(messageDiv)
             // })
             socket.on('options', function (options) {
-                var messageDiv = document.createElement('div');
-                messageDiv.className = "message"
-                messageDiv.appendChild(meta)
+                var messageDiv = document.createElement('li');
+                messageDiv.className = "sent"
+                messageDiv.appendChild(img)
                 var message = document.createElement('p');
-                message.className = 'text';
                 message.innerHTML = options;
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
@@ -301,17 +223,16 @@ Author URL: http://w3layouts.com
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 const msg = document.getElementById('msg')
-
-                var messageDiv = document.createElement('div');
-                messageDiv.className = "message"
+                var messageDiv = document.createElement('li');
+                messageDiv.className = "replies"
                 var message = document.createElement('p');
-                message.className = 'text';
                 message.textContent = msg.value;
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
 
+
                 console.log(msg.value)
-                socket.emit('order', msg.value)
+                //socket.emit('order', msg.value)
             })
         })
 
