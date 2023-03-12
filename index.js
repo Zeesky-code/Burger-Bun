@@ -12,6 +12,9 @@ const ChatSession = require('./chat');
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const { connectToMongoDB } = require('./config/db')
+connectToMongoDB()
+
 const PORT = 8080 || process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -44,7 +47,7 @@ io.on("connection", (socket) => {
 	const sessionId = session.id;
     const sessionData = socket.request.session;
     socket.join(sessionId)
-    
+
     const chatSession = new ChatSession({io, sessionData})
     console.log("User connected")
     chatSession.displayOptions()

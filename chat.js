@@ -59,7 +59,7 @@ class ChatSession{
                 botresponse += "You selected option 97 <br>order canceled";
                 break;
             default:
-                botresponse += "Invalid selection";
+                this.displayOptions()
                 break;
         }
         const inputEvent = this.createEvent({message: botresponse})
