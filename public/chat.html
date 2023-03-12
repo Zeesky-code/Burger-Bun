@@ -196,7 +196,6 @@ Author URL: http://w3layouts.com
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
 
-
             })
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -207,8 +206,8 @@ Author URL: http://w3layouts.com
                 message.textContent = msg.value;
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
-
                 socket.emit('userMessage', msg.value)
+
             })
         })
 

@@ -12727,7 +12727,7 @@ line-height:43px;
   height: auto;
   min-height: calc(100% - 90px);
   max-height: calc(100% - 90px);
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
   margin: 0;

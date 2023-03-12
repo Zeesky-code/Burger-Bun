@@ -1,4 +1,5 @@
 const validateMessage = require('./utils/validator')
+const sessionDB = require("./models/session")
 class ChatSessionEvent{
     constructor({eventName, message}){
         this.eventName =  eventName;
@@ -6,9 +7,15 @@ class ChatSessionEvent{
     }
 }
 class ChatSession{
-    constructor({io, sessionData}){
+    constructor({io, sessionId}){
         this.socket = io
-        this.sessionData = sessionData
+        this.sessionId = sessionId
+        
+        const checksessionID = sessionDB.findOne({ sessionId });
+
+        if (!checksessionID) {
+            sessionDB.create({ sessionId });
+        }
     }
     createEvent({message}){
         const event  = new ChatSessionEvent({eventName:'botMessage', message})
@@ -65,6 +72,7 @@ class ChatSession{
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
     }
+
 }
 
 module.exports = ChatSession

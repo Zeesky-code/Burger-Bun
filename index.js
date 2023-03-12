@@ -13,7 +13,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 const { connectToMongoDB } = require('./config/db')
-connectToMongoDB()
+//connectToMongoDB()
 
 const PORT = 8080 || process.env.PORT;
 
@@ -46,9 +46,10 @@ io.on("connection", (socket) => {
     // Listen for order requests
 	const sessionId = session.id;
     const sessionData = socket.request.session;
+    
     socket.join(sessionId)
 
-    const chatSession = new ChatSession({io, sessionData})
+    const chatSession = new ChatSession({io, sessionId})
     console.log("User connected")
     chatSession.displayOptions()
     socket.on('userMessage', (message) => {
