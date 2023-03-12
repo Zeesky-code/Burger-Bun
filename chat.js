@@ -30,6 +30,15 @@ class ChatSession{
         const errorEvent = this.createEvent({message: 'Invalid Selection, please try again'})
         this.emitMessage(errorEvent)
     }
+    displayMenu(){
+        const menu = `Select an item to place an order
+                        <br />Mini cheese Burger    $9.50
+                        <br />Double size Burger    $13.75
+                        <br />Bread beans on toast  $50.00
+                        <br />Bacon, Egg and Cheese $10.50`
+        const menuEvent = this.createEvent({message:menu})
+        this.emitMessage(menuEvent)
+    }
     checkUserMessage({message}){
         if(!validateMessage(message)){
             this.displayError()
@@ -38,8 +47,7 @@ class ChatSession{
         var botresponse ="";
         switch(parseInt(message)){
             case 1:
-                botresponse += "You selected 1 <br> here is the menu";
-                console.log(botresponse)
+                this.displayMenu()
                 break;
             case 99:
                 botresponse += "You selected 99 <br> checkout your order";

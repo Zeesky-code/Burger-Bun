@@ -41,7 +41,10 @@ app.use(sessionMiddleware)
 
 io.on("connection", (socket) => {
     // Listen for order requests
+	const sessionId = session.id;
     const sessionData = socket.request.session;
+    socket.join(sessionId)
+    
     const chatSession = new ChatSession({io, sessionData})
     console.log("User connected")
     chatSession.displayOptions()
