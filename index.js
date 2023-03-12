@@ -46,14 +46,14 @@ io.on("connection", (socket) => {
     // Listen for order requests
 	const sessionId = session.id;
     const sessionData = socket.request.session;
-    
+
     socket.join(sessionId)
 
     const chatSession = new ChatSession({io, sessionId})
     console.log("User connected")
     chatSession.displayOptions()
     socket.on('userMessage', (message) => {
-        chatSession.checkUserMessage({message})
+        chatSession.determineLevel({message})
         console.log('Received order:', message);
 
         // // Add order to localStorage

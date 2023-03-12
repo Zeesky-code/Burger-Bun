@@ -1,5 +1,6 @@
 const validateMessage = require('./utils/validator')
 const sessionDB = require("./models/session")
+const Menu = require("./utils/menu")
 class ChatSessionEvent{
     constructor({eventName, message}){
         this.eventName =  eventName;
@@ -10,7 +11,9 @@ class ChatSession{
     constructor({io, sessionId}){
         this.socket = io
         this.sessionId = sessionId
-        
+        //to keep track of the order operation
+        this.stage = 0;
+
         const checksessionID = sessionDB.findOne({ sessionId });
 
         if (!checksessionID) {
@@ -46,10 +49,18 @@ class ChatSession{
         const menuEvent = this.createEvent({message:menu})
         this.emitMessage(menuEvent)
     }
-    checkUserMessage({message}){
+    determineLevel({message}){
         if(!validateMessage(message)){
             this.displayError()
         }
+        switch(this.stage){
+            case 0:
+                this.checkUserMessage({message})
+            case 1:
+                this.saveOrder(message)
+        }
+    }
+    checkUserMessage({message}){
 
         var botresponse ="";
         switch(parseInt(message)){
@@ -69,8 +80,38 @@ class ChatSession{
                 this.displayOptions()
                 break;
         }
+        this.stage++;
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
+    }
+    saveOrder({message}){
+        var botresponse ="You ordered ";
+        switch(parseInt(message)){
+            case 1:
+                botresponse += ` ${Menu[0].food}`;
+                break;
+            case 2:
+                botresponse += ` ${Menu[1].food}`;
+                break;
+            case 3:
+                botresponse += ` ${Menu[2].food}`;
+                break;
+            case 4:
+                botresponse += ` ${Menu[3].food}`;
+                break;
+        }
+    }
+    checkoutOrder(){
+
+    }
+    cancelOrder(){
+
+    }
+    showOrderHistory(){
+
+    }
+    showCurrentOrder(){
+
     }
 
 }
