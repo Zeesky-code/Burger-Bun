@@ -14,11 +14,13 @@ class ChatSession{
         //to keep track of the order operation
         this.stage = 0;
 
-        const checksessionID = sessionDB.findOne({ sessionId });
+        var checksessionID;
+        checksessionID = sessionDB.findOne({ sessionId });
 
         if (!checksessionID) {
-            sessionDB.create({ sessionId });
+            checksessionID = sessionDB.create({ sessionId });
         }
+        this.session  = checksessionID
     }
     createEvent({message}){
         const event  = new ChatSessionEvent({eventName:'botMessage', message})
@@ -36,10 +38,12 @@ class ChatSession{
         const optionsEvent = this.createEvent({message:options})
         this.emitMessage(optionsEvent)
     }
+
     displayError(){
         const errorEvent = this.createEvent({message: 'Invalid Selection, please try again'})
         this.emitMessage(errorEvent)
     }
+
     displayMenu(){
         const menu = `Select an item to place an order
                         <br />Mini cheese Burger    $9.50
@@ -71,7 +75,7 @@ class ChatSession{
                 botresponse += "You selected 99 <br> checkout your order";
                 break;
             case 98:
-                botresponse += "You selected 98 <br> here is your order history";
+                this.showOrderHistory();
                 break;
             case 97:
                 botresponse += "You selected option 97 <br>order canceled";
@@ -80,12 +84,14 @@ class ChatSession{
                 this.displayOptions()
                 break;
         }
-        this.stage++;
+        //this.stage++;
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
     }
+
     saveOrder({message}){
         var botresponse ="You ordered ";
+        console.log('Received order:', message);
         switch(parseInt(message)){
             case 1:
                 botresponse += ` ${Menu[0].food}`;
@@ -99,7 +105,12 @@ class ChatSession{
             case 4:
                 botresponse += ` ${Menu[3].food}`;
                 break;
+            default:
+                this.displayError()
         }
+        this.stage++;
+        const inputEvent = this.createEvent({message: botresponse})
+        this.emitMessage(inputEvent)
     }
     checkoutOrder(){
 
@@ -107,8 +118,18 @@ class ChatSession{
     cancelOrder(){
 
     }
-    showOrderHistory(){
+    async showOrderHistory(){
+        const session = await sessionDB.findOne({ sessionId: this.sessionId });
+    	var botresponse = "";
 
+        if (session.currentOrder.length < 1) {
+            botresponse += "You do not have any order yet";
+        } else {
+            botresponse += sessionOrder.currentOrder;
+        }
+
+        const inputEvent = this.createEvent({message: botresponse})
+        this.emitMessage(inputEvent)
     }
     showCurrentOrder(){
 

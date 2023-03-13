@@ -13,7 +13,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 const { connectToMongoDB } = require('./config/db')
-//connectToMongoDB()
+connectToMongoDB()
 
 const PORT = 8080 || process.env.PORT;
 
@@ -54,18 +54,9 @@ io.on("connection", (socket) => {
     chatSession.displayOptions()
     socket.on('userMessage', (message) => {
         chatSession.determineLevel({message})
-        console.log('Received order:', message);
-
-        // // Add order to localStorage
-        // const deviceId = socket.handshake.headers['sec-websocket-key'];
-        // if (!orders[deviceId]) {
-        //     orders[deviceId] = [];
-        // }
-        // orders[deviceId].push(order);
-        // //localStorage.setItem('orders', JSON.stringify(orders));
 
         // Send confirmation message
-        socket.emit('message', 'Order placed');
+        //socket.emit('message', 'Order placed');
 
     });
     
