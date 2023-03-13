@@ -15,10 +15,10 @@ class ChatSession{
         this.stage = 0;
 
         var checksessionID;
-        checksessionID = sessionDB.findOne({ sessionId });
+        checksessionID = sessionDB.findOne({ sessionId:sessionId });
 
         if (!checksessionID) {
-            checksessionID = sessionDB.create({ sessionId });
+            checksessionID = sessionDB.create({ sessionId: sessionId });
         }
         this.session  = checksessionID
     }
@@ -42,6 +42,8 @@ class ChatSession{
     displayError(){
         const errorEvent = this.createEvent({message: 'Invalid Selection, please try again'})
         this.emitMessage(errorEvent)
+        
+        
     }
 
     displayMenu(){
@@ -64,10 +66,13 @@ class ChatSession{
             case 1:
                 this.saveOrder(message)
                 break;
+            default:
+                this.displayOptions()
+                break;
         }
     }
     checkUserMessage({message}){
-
+        this.stage++
         var botresponse = "";
         switch(parseInt(message)){
             case 1:
@@ -107,8 +112,6 @@ class ChatSession{
             case 4:
                 botresponse += ` ${Menu[3].food}`;
                 break;
-            default:
-                this.displayError()
         }
         this.stage++;
         const inputEvent = this.createEvent({message: botresponse})
@@ -135,6 +138,7 @@ class ChatSession{
     }
     async showCurrentOrder(){
         const session = await sessionDB.findOne({ sessionId: this.sessionId });
+
     	var botresponse = "";
 
         if (session.currentOrder.length < 1) {
