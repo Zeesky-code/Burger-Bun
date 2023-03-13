@@ -68,7 +68,7 @@ class ChatSession{
     }
     checkUserMessage({message}){
 
-        var botresponse ="";
+        var botresponse = "";
         switch(parseInt(message)){
             case 1:
                 this.displayMenu()
@@ -124,6 +124,19 @@ class ChatSession{
         const session = await sessionDB.findOne({ sessionId: this.sessionId });
     	var botresponse = "";
 
+        if (session.Orders.length < 1) {
+            botresponse += "You do not have any order yet";
+        } else {
+            botresponse += sessionOrder.Orders;
+        }
+
+        const inputEvent = this.createEvent({message: botresponse})
+        this.emitMessage(inputEvent)
+    }
+    async showCurrentOrder(){
+        const session = await sessionDB.findOne({ sessionId: this.sessionId });
+    	var botresponse = "";
+
         if (session.currentOrder.length < 1) {
             botresponse += "You do not have any order yet";
         } else {
@@ -132,9 +145,6 @@ class ChatSession{
 
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
-    }
-    showCurrentOrder(){
-
     }
 
 }
