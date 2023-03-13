@@ -60,8 +60,10 @@ class ChatSession{
         switch(this.stage){
             case 0:
                 this.checkUserMessage({message})
+                break;
             case 1:
                 this.saveOrder(message)
+                break;
         }
     }
     checkUserMessage({message}){
