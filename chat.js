@@ -18,8 +18,7 @@ class ChatSession{
     }
     async saveSession(session){
         console.log(session)
-        var checksessionID;
-        checksessionID = await sessionDB.findOne({ sessionId:session});
+        var checksessionID = await sessionDB.findOne({ sessionId:session});
 
         if (!checksessionID) {
             checksessionID = await sessionDB.create({ sessionId: session });
