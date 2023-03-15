@@ -44,8 +44,9 @@ app.use(sessionMiddleware)
 
 io.on("connection", (socket) => {
     // Listen for order requests
-	const sessionId = session.id;
+
     const sessionData = socket.request.session;
+    const sessionId = sessionData.id;
 
     socket.join(sessionId)
 

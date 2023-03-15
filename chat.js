@@ -1,6 +1,6 @@
 const validateMessage = require('./utils/validator')
 const sessionDB = require("./models/session")
-const Menu = require("./utils/menu")
+const {Menu} = require("./utils/menu")
 class ChatSessionEvent{
     constructor({eventName, message}){
         this.eventName =  eventName;
@@ -14,13 +14,18 @@ class ChatSession{
         //to keep track of the order operation
         this.stage = 0;
 
+        this.saveSession(this.sessionId)
+    }
+    async saveSession(session){
+        console.log(session)
         var checksessionID;
-        checksessionID = sessionDB.findOne({ sessionId:sessionId });
+        checksessionID = await sessionDB.findOne({ sessionId:session});
 
         if (!checksessionID) {
-            checksessionID = sessionDB.create({ sessionId: sessionId });
+            checksessionID = await sessionDB.create({ sessionId: session });
         }
         this.session  = checksessionID
+        console.log(this.session)
     }
     createEvent({message}){
         const event  = new ChatSessionEvent({eventName:'botMessage', message})
@@ -64,7 +69,7 @@ class ChatSession{
                 this.checkUserMessage({message})
                 break;
             case 1:
-                this.saveOrder(message)
+                this.saveOrder({message})
                 break;
             default:
                 this.displayOptions()
@@ -114,6 +119,7 @@ class ChatSession{
                 break;
         }
         this.stage++;
+        this.session.currentOrder.push(Menu[parseInt(message)-1])
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
     }
