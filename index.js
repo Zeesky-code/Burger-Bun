@@ -36,10 +36,13 @@ const sessionMiddleware = session({
     },
 });
 
-io.engine.use(sessionMiddleware);
+
 app.use(sessionMiddleware)
 
 // Define options to be sent to customer on landing page
+io.use((socket, next) => {
+    sessionMiddleware(socket.request, socket.request.res, next);
+});
 
 
 io.on("connection", (socket) => {
