@@ -80,19 +80,22 @@ class ChatSession{
         var botresponse = "";
         switch(parseInt(message)){
             case 1:
-                this.displayMenu()
+                this.displayMenu();
                 break;
             case 99:
-                botresponse += "You selected 99 <br> checkout your order";
+                this.checkoutOrder();
                 break;
             case 98:
                 this.showOrderHistory();
                 break;
             case 97:
-                this.cancelOrder()
+                this.showCurrentOrder();
+                break;
+            case 0:
+                this.cancelOrder();
                 break;
             default:
-                this.displayOptions()
+                this.displayOptions();
                 break;
         }
         //this.stage++;
@@ -120,7 +123,7 @@ class ChatSession{
                 this.displayMenu()
                 break;
         }
-        this.stage++;
+        this.stage = 0;
         const order = { food: ` ${Menu[parseInt(message)-1].food}` };
         await sessionDB.findOneAndUpdate(
             { sessionId: this.sessionId },
@@ -132,8 +135,24 @@ class ChatSession{
         this.emitMessage(inputEvent)
         this.displayOptions()
     }
-    checkoutOrder(){
-
+    async checkoutOrder(){
+        const session = await sessionDB.findOne({ sessionId: this.sessionId });
+        console.log(session.currentOrder)
+        var botresponse = "";
+        if (session.currentOrder.length < 1) {
+            botresponse += "You do not have any order yet";
+        } else {
+            await sessionDB.findOneAndUpdate(
+                { sessionId: this.sessionId },
+                { $push: { Orders: { $each: session.currentOrder } } },
+                { new: true } // Return the updated document
+            );
+            botresponse += `Your order has been checked out.`;
+        }
+        this.stage = 0;
+        const checkOutEvent = this.createEvent({message: botresponse})
+        this.emitMessage(checkOutEvent)
+        this.displayOptions()
     }
     async cancelOrder(){
         const session = await sessionDB.findOne({ sessionId: this.sessionId });
@@ -143,6 +162,7 @@ class ChatSession{
         } else {
             botresponse += `Your order has been cancelled.`;
         }
+        this.stage = 0;
         const cancelEvent = this.createEvent({message: botresponse})
         this.emitMessage(cancelEvent)
         this.displayOptions()
@@ -155,9 +175,11 @@ class ChatSession{
         if (session.Orders.length < 1) {
             botresponse += "You do not have any order yet";
         } else {
-            botresponse += sessionOrder.Orders;
+            session.Orders.forEach((order)=>{
+                botresponse += `${order.food} <br />`;
+            })
         }
-
+        this.stage = 0;
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
         this.displayOptions()
@@ -170,9 +192,11 @@ class ChatSession{
         if (session.currentOrder.length < 1) {
             botresponse += "You do not have any order yet";
         } else {
-            botresponse += sessionOrder.currentOrder;
+            session.currentOrder.forEach((order)=>{
+                botresponse += `${order.food} <br />`;
+            })
         }
-
+        this.stage = 0;
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
         this.displayOptions()
