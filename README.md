@@ -12,7 +12,7 @@ To install HiveBot, follow these steps:
 
 1. Clone this repository to your local machine:
     ```
-    git clone https://github.com/Zeesky-code/HiveBot.git
+    git clone https://github.com/Zeesky-code/Burger-Bun.git
     ```
 2. Install the dependencies:
     ```
