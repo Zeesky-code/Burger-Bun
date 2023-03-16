@@ -38,3 +38,32 @@ To install HiveBot, follow these steps:
     http://localhost:8080
     ```
     
+## Usage
+
+- Navigate to the base url after running the app
+
+- Click on the `Order Now` button to be directed to chat page
+
+- You'll be presented with the options:
+
+
+    - Select "1" to order food
+
+    - Select "99" to checkout order
+
+    - Select "98" to see order history
+
+    - Select "97" to see current order
+
+    - Select "0" to cancel order
+   
+
+- If you select "1" to order food, the chatbot will present you with a menu of items. You can enter the number of the item you want to order.
+
+- If you select "99" to checkout your order, the chatbot will let you know that your order has been placed and will show the main menu.
+
+- If you select "98" to see old orders, the chatbot will show you your order history.
+
+- If you select "97" to see your current order, the chatbot will show you your current order.
+
+- If you select "0" to cancel your order, the chatbot will let you know that your order has been cancelled and will show the main menu.
