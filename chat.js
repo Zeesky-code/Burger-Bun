@@ -124,6 +124,7 @@ class ChatSession{
         this.session.currentOrder.push(Menu[parseInt(message)-1])
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
+        this.displayOptions()
     }
     checkoutOrder(){
 
