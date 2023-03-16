@@ -33,3 +33,8 @@ To install HiveBot, follow these steps:
     ```
     npm run start
     ```
+5. Open the application in your browser:
+    ```
+    http://localhost:8080
+    ```
+    
