@@ -16,6 +16,7 @@ class ChatSession{
 
         this.saveSession(this.sessionId)
     }
+    //to debug
     async saveSession(session){
         console.log(session)
         var checksessionID = await sessionDB.findOne({ sessionId:session});
@@ -105,7 +106,6 @@ class ChatSession{
 
     async saveOrder({message}){
         var botresponse ="You ordered ";
-        console.log('Received order:', message);
         switch(parseInt(message)){
             case 1:
                 botresponse += ` ${Menu[0].food}`;
@@ -130,14 +130,12 @@ class ChatSession{
             { $push: { currentOrder: order } },
             { new: true } // Return the updated document
         );
-        console.log("updated order")
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
         this.displayOptions()
     }
     async checkoutOrder(){
         const session = await sessionDB.findOne({ sessionId: this.sessionId });
-        console.log(session.currentOrder)
         var botresponse = "";
         if (session.currentOrder.length < 1) {
             botresponse += "You do not have any order yet";
