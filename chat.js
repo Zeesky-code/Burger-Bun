@@ -8,21 +8,21 @@ class ChatSessionEvent{
     }
 }
 class ChatSession{
-    constructor({io, sessionId}){
+    constructor({io, deviceId}){
         this.socket = io
-        this.sessionId = sessionId
+        this.deviceId = deviceId
         //to keep track of the order operation
         this.stage = 0;
 
-        this.saveSession(this.sessionId)
+        this.saveSession(this.deviceId)
     }
     //to debug
     async saveSession(session){
         console.log(session)
-        var checksessionID = await sessionDB.findOne({ sessionId:session});
+        var checksessionID = await sessionDB.findOne({ deviceId:session});
 
         if (!checksessionID) {
-            checksessionID = await sessionDB.create({ sessionId: session });
+            checksessionID = await sessionDB.create({ deviceId: session });
         }
         this.session  = checksessionID
         console.log(this.session)
@@ -126,7 +126,7 @@ class ChatSession{
         this.stage = 0;
         const order = { food: ` ${Menu[parseInt(message)-1].food}` };
         await sessionDB.findOneAndUpdate(
-            { sessionId: this.sessionId },
+            { deviceId: this.deviceId },
             { $push: { currentOrder: order } },
             { new: true } // Return the updated document
         );
@@ -135,13 +135,13 @@ class ChatSession{
         this.displayOptions()
     }
     async checkoutOrder(){
-        const session = await sessionDB.findOne({ sessionId: this.sessionId });
+        const session = await sessionDB.findOne({ deviceId: this.deviceId });
         var botresponse = "";
         if (session.currentOrder.length < 1) {
             botresponse += "You do not have any order yet";
         } else {
             await sessionDB.findOneAndUpdate(
-                { sessionId: this.sessionId },
+                { deviceId: this.deviceId },
                 {
                     $push: { Orders: { $each: session.currentOrder } },
                     $set: { currentOrder: [] }
@@ -156,13 +156,13 @@ class ChatSession{
         this.displayOptions()
     }
     async cancelOrder(){
-        const session = await sessionDB.findOne({ sessionId: this.sessionId });
+        const session = await sessionDB.findOne({ deviceId: this.deviceId });
         var botresponse = "";
         if (session.currentOrder.length < 1) {
             botresponse += "You do not have any order yet";
         } else {
             await sessionDB.findOneAndUpdate(
-                { sessionId: this.sessionId },
+                { deviceId: this.deviceId },
                 { $set: { currentOrder: [] }},
                 { new: true } // Return the updated document
             );
@@ -175,7 +175,7 @@ class ChatSession{
 
     }
     async showOrderHistory(){
-        const session = await sessionDB.findOne({ sessionId: this.sessionId });
+        const session = await sessionDB.findOne({ deviceId: this.deviceId });
     	var botresponse = "";
 
         if (session.Orders.length < 1) {
@@ -191,7 +191,7 @@ class ChatSession{
         this.displayOptions()
     }
     async showCurrentOrder(){
-        const session = await sessionDB.findOne({ sessionId: this.sessionId });
+        const session = await sessionDB.findOne({ deviceId: this.deviceId });
 
     	var botresponse = "";
 

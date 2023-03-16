@@ -50,10 +50,11 @@ io.on("connection", (socket) => {
 
     const sessionData = socket.request.session;
     const sessionId = sessionData.id;
+    const deviceId = socket.handshake.headers["user-agent"];
+    console.log(deviceId)
+    socket.join(deviceId)
 
-    socket.join(sessionId)
-
-    const chatSession = new ChatSession({io, sessionId})
+    const chatSession = new ChatSession({io, deviceId})
     console.log("User connected")
     chatSession.displayOptions()
     socket.on('userMessage', (message) => {
