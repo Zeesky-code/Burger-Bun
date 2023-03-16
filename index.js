@@ -51,7 +51,6 @@ io.on("connection", (socket) => {
     const sessionData = socket.request.session;
     const sessionId = sessionData.id;
     const deviceId = socket.handshake.headers["user-agent"];
-    console.log(deviceId)
     socket.join(deviceId)
 
     const chatSession = new ChatSession({io, deviceId})

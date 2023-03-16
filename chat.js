@@ -18,14 +18,12 @@ class ChatSession{
     }
     //to debug
     async saveSession(session){
-        console.log(session)
         var checksessionID = await sessionDB.findOne({ deviceId:session});
 
         if (!checksessionID) {
             checksessionID = await sessionDB.create({ deviceId: session });
         }
         this.session  = checksessionID
-        console.log(this.session)
     }
     createEvent({message}){
         const event  = new ChatSessionEvent({eventName:'botMessage', message})
@@ -52,11 +50,11 @@ class ChatSession{
     }
 
     displayMenu(){
-        const menu = `Select an item to place an order
-                        <br />Mini cheese Burger    $9.50
-                        <br />Double size Burger    $13.75
-                        <br />Bread beans on toast  $50.00
-                        <br />Bacon, Egg and Cheese $10.50`
+        const menu = `Select an item number to place an order
+                        <br />1 Mini cheese Burger    $9.50
+                        <br />2 Double size Burger    $13.75
+                        <br />3 Bread beans on toast  $50.00
+                        <br />4 Bacon, Egg and Cheese $10.50`
         const menuEvent = this.createEvent({message:menu})
         this.emitMessage(menuEvent)
     }
