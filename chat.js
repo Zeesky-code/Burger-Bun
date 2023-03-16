@@ -100,7 +100,7 @@ class ChatSession{
         this.emitMessage(inputEvent)
     }
 
-    saveOrder({message}){
+    async saveOrder({message}){
         var botresponse ="You ordered ";
         console.log('Received order:', message);
         switch(parseInt(message)){
@@ -121,7 +121,13 @@ class ChatSession{
                 break;
         }
         this.stage++;
-        this.session.currentOrder.push(Menu[parseInt(message)-1])
+        const order = { food: ` ${Menu[parseInt(message)-1].food}` };
+        await sessionDB.findOneAndUpdate(
+            { sessionId: this.sessionId },
+            { $push: { currentOrder: order } },
+            { new: true } // Return the updated document
+        );
+        console.log("updated order")
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
         this.displayOptions()
