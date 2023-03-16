@@ -195,6 +195,7 @@ Author URL: http://w3layouts.com
                 message.innerHTML = botMessage;
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
+                message.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
             })
             form.addEventListener('submit', function (e) {
@@ -207,8 +208,10 @@ Author URL: http://w3layouts.com
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
                 socket.emit('userMessage', msg.value)
+                message.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
             })
+            messages.scrollTop = messages.scrollHeight;
         })
 
 
