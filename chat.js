@@ -89,7 +89,7 @@ class ChatSession{
                 this.showOrderHistory();
                 break;
             case 97:
-                botresponse += "You selected option 97 <br>order canceled";
+                this.cancelOrder()
                 break;
             default:
                 this.displayOptions()
@@ -116,6 +116,9 @@ class ChatSession{
             case 4:
                 botresponse += ` ${Menu[3].food}`;
                 break;
+            default:
+                this.displayMenu()
+                break;
         }
         this.stage++;
         this.session.currentOrder.push(Menu[parseInt(message)-1])
@@ -125,7 +128,17 @@ class ChatSession{
     checkoutOrder(){
 
     }
-    cancelOrder(){
+    async cancelOrder(){
+        const session = await sessionDB.findOne({ sessionId: this.sessionId });
+        var botresponse = "";
+        if (session.currentOrder.length < 1) {
+            botresponse += "You do not have any order yet";
+        } else {
+            botresponse += `Your order has been cancelled.`;
+        }
+        const cancelEvent = this.createEvent({message: botresponse})
+        this.emitMessage(cancelEvent)
+        this.displayOptions()
 
     }
     async showOrderHistory(){
@@ -140,6 +153,7 @@ class ChatSession{
 
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
+        this.displayOptions()
     }
     async showCurrentOrder(){
         const session = await sessionDB.findOne({ sessionId: this.sessionId });
@@ -154,6 +168,7 @@ class ChatSession{
 
         const inputEvent = this.createEvent({message: botresponse})
         this.emitMessage(inputEvent)
+        this.displayOptions()
     }
 
 }
