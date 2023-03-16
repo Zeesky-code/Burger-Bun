@@ -144,7 +144,10 @@ class ChatSession{
         } else {
             await sessionDB.findOneAndUpdate(
                 { sessionId: this.sessionId },
-                { $push: { Orders: { $each: session.currentOrder } } },
+                {
+                    $push: { Orders: { $each: session.currentOrder } },
+                    $set: { currentOrder: [] }
+                },
                 { new: true } // Return the updated document
             );
             botresponse += `Your order has been checked out.`;
@@ -160,6 +163,11 @@ class ChatSession{
         if (session.currentOrder.length < 1) {
             botresponse += "You do not have any order yet";
         } else {
+            await sessionDB.findOneAndUpdate(
+                { sessionId: this.sessionId },
+                { $set: { currentOrder: [] }},
+                { new: true } // Return the updated document
+            );
             botresponse += `Your order has been cancelled.`;
         }
         this.stage = 0;
