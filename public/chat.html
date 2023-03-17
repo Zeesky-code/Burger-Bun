@@ -208,6 +208,7 @@ Author URL: http://w3layouts.com
                 messageDiv.appendChild(message)
                 messages.appendChild(messageDiv)
                 socket.emit('userMessage', msg.value)
+                msg.value= ""
                 message.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
             })
