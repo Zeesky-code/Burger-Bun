@@ -5,7 +5,7 @@ Burger Bun is a restaurant website with a  restaurant chatbot that will assist c
  http://burger-bun.onrender.com/
 
 ## Prerequisites
-Before you can run HiveBot, you need to have the following software installed on your system:
+Before you can run Burger Bun, you need to have the following software installed on your system:
 
 - Node.js (version 12 or later)
 
